@@ -13,4 +13,9 @@ public class Counter implements Serializable {
     public void setCurrentCounter(long currentCounter){
         this.currentCounter = currentCounter;
     }
+
+    @Override
+    public String toString(){
+        return "Счетчик";
+    }
 }
