@@ -1,35 +1,32 @@
 import java.io.*;
 
 /*Обобщенный класс для удобной
-сериализации/десериализации объектов
-Ещё не разобрался не слишком ли такое обращение с открытием/закрытием
-стримов позорно для показа людям*/
+сериализации/десериализации объектов.
+Можно было обойтись без использования обобщения.
+*/
 public class SaveLoadObject<E> {
-    //Streams for input and output
-    private FileInputStream fileInputStream;
-    private FileOutputStream fileOutputStream;
-    private ObjectInputStream objectInputStream;
-    private ObjectOutputStream objectOutputStream;
+    //Стандартный конструктор
     public SaveLoadObject(){
-
     }
-    public void SaveToFile(E object, String address){
+    //Сохранение объекта objectToSave в файл по адресу address
+    public void SaveToFile(E objectToSave, String address){
         try {
-            fileOutputStream = new FileOutputStream(address);
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            FileOutputStream fileOutputStream = new FileOutputStream(address);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            objectOutputStream.writeObject(object);
-
+            objectOutputStream.writeObject(objectToSave);
+            System.out.println(objectToSave.toString() + " успешно сохранён в файл");
             objectOutputStream.close();
             fileOutputStream.close();
         }catch (IOException ex){
             System.out.println("Ошибка при сохранении файла. Нет доступа.");
         }
     }
+    //Загрузка объекта из файла по адресу address. При ошибке в процессе выполнения будет возвращен defaultResultObject
     public E loadFromFile(E defaultResultObject, String address){
         try {
-        fileInputStream = new FileInputStream(address);
-        objectInputStream = new ObjectInputStream(fileInputStream);
+            FileInputStream fileInputStream = new FileInputStream(address);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         defaultResultObject = (E)objectInputStream.readObject();
         objectInputStream.close();
         fileInputStream.close();
